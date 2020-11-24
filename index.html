@@ -136,8 +136,31 @@
 
 		codeReader
 		  .decodeOnceFromVideoDevice(undefined, 'video')
-		  .then(result => console.log(result.text))
+		  .then(result => {
+		  	if(!validateScannedAddress(result.text)){
+		  		alert("Failed to decode Noir address, please check!")
+		  	}
+		  	codeReader.reset();
+		  	return;
+		  })
 		  .catch(err => console.error(err));
+	}
+
+	function validateScannedAddress(addr) {
+		try {
+			if (addr.startsWith('noir:')) {
+				addr = addr.substring(5);
+    			Noir.address.toOutputScript(addr);
+    			document.getElementById('address').value = addr;
+			} else {
+    			Noir.address.toOutputScript(addr);
+    			document.getElementById('address').value = addr;
+			}
+	    	return true;
+	  	} catch (e) {
+	  		console.error(e);
+	    	return false;
+	  	}
 	}
 
 </script> 
