@@ -29,13 +29,16 @@
         {
           "name": "@electron-forge/maker-squirrel",
           "config": {
-            "name": "noir_swap_application"
+            "name": "noir_swap_application",
+    		"authors": "The Noir Team <team@noirofficial.org>",
+    		"iconUrl": "http://localhost:8000/img/noir.ico",
+    		"setupIcon": "img/noir.ico"
           }
         },
         {
           "name": "@electron-forge/maker-zip",
           "platforms": [
-            "darwin", "windows"
+            "darwin"
           ]
         },
         {
@@ -45,8 +48,8 @@
               "icon": "img/noir.png",
               "maintainer": "The Noir Team",
               "homepage": "https://noirofficial.org"
-    	    }
-	  }
+            }
+          }
         }
       ]
     }
