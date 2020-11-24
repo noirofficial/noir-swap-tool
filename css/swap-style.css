@@ -1,0 +1,239 @@
+@font-face {
+  font-family: GothamLight;
+  src: url(../font/GothamRounded-Light.otf);
+}
+
+@font-face {
+  font-family: GothamBook;
+  src: url(../font/GothamRounded-Book.otf);
+}
+
+@font-face {
+  font-family: GothamMedium;
+  src: url(../font/GothamRounded-Medium.otf);
+}
+
+.center-title {
+    background-color: #480327;
+  	margin: auto;
+ 	width: calc(65% + 4em);
+  	height: 96px;
+}
+
+.center-title img {
+	display: inline-block;
+}
+
+.center-title p {
+	position: absolute;
+	font-family: GothamBook;
+	font-size: 80px;
+	color: #FFFFFF;
+	display: inline-block;
+	margin-left: 12.5px;
+	margin-bottom: 0;
+	margin-top: 0;
+	margin-right: 12.5px;
+	margin-block-start: 0;
+	margin-block-end: 0;
+}
+
+.div-spacer {
+	height: 25px;
+}
+
+.center {
+    background-color: #FFFFFF;
+  	margin: auto;
+ 	width: 65%;
+  	border-radius: 15px;
+  	border: 1px solid white;
+  	box-shadow: 0 6px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  	padding: 2em;
+}
+
+.center p {
+	font-family: GothamBook;
+	font-size: 16pt;
+    color: #141414;
+	margin: 0em;
+}
+
+.center table {
+	width: 100%;
+	border-spacing: 0px;
+}
+
+.center table tr td.td-left {
+	width: 17%;
+}
+
+.center table tr td.td-center {
+	width: 66%;
+}
+
+.center table tr td.td-right {
+	width: 17%;
+}
+
+.progress {
+	font-family: GothamBook;
+	font-size: 16pt;
+    color: #ABABAB;
+    background-color: #FFFFFF;
+  	margin: auto;
+ 	width: 50%;
+  	border-radius: 15px;
+  	border: 1px solid white;
+  	box-shadow: 0 6px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  	padding: 2em;
+}
+
+.tr-spacer {
+	height: 12.5px;
+}
+
+.td-title {
+	color: #ABABAB;
+	font-family: GothamMedium;
+	font-size: 14pt;
+}
+
+.td-textinput {
+	font-family: GothamLight;
+	width: calc(100% - 70px);
+	background-color: #F0EFEF;
+	color: #ABABAB;
+	margin-left: 25px;
+	margin-right: 25px;
+	font-size: 14pt;
+	padding: 10px;
+  	border-radius: 15px;
+  	border: 1px solid #F0EFEF;
+  	box-shadow: 0 6px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+input.td-textinput:hover {
+	font-family: GothamLight;
+	width: calc(100% - 70px);
+	background-color: #F0EFEF;
+	color: #ABABAB;
+	margin-left: 25px;
+	margin-right: 25px;
+	font-size: 14pt;
+	padding: 10px;
+    outline-width: 0;
+  	border-radius: 15px;
+  	border: 1px solid #F0EFEF;
+  	box-shadow: 0 6px 8px 0 rgba(0, 0, 0, 0.4), 0 6px 20px 0 rgba(0, 0, 0, 0.38);
+}
+
+input.td-textinput:focus {
+	font-family: GothamLight;
+	width: calc(100% - 70px);
+	background-color: #F0EFEF;
+	color: #ABABAB;
+	margin-left: 25px;
+	margin-right: 25px;
+	font-size: 14pt;
+	padding: 10px;
+    outline-width: 0;
+  	border-radius: 15px;
+  	border: 1px solid #F0EFEF;
+  	box-shadow: 0 6px 8px 0 rgba(0, 0, 0, 0.6), 0 6px 20px 0 rgba(0, 0, 0, 0.57);
+}
+
+button {
+	font-family: GothamMedium;
+	background-color: #2B001E;
+	color: #FFFFFF;
+	font-size: 14pt;
+	padding: 10px;
+    outline-width: 0;
+  	border-radius: 15px;
+  	border: 1px solid #2B001E;
+  	box-shadow: 0 6px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+button:hover {
+	font-family: GothamMedium;
+	background-color: #2B001E;
+	color: #FFFFFF;
+	font-size: 14pt;
+	padding: 10px;
+    outline-width: 0;
+  	border-radius: 15px;
+  	border: 1px solid #2B001E;
+  	box-shadow: 0 6px 8px 0 rgba(0, 0, 0, 0.4), 0 6px 20px 0 rgba(0, 0, 0, 0.38);
+    cursor: pointer;
+}
+
+button:focus {
+	font-family: GothamMedium;
+	background-color: #2B001E;
+	color: #FFFFFF;
+	font-size: 14pt;
+	padding: 10px;
+    outline-width: 0;
+  	border-radius: 15px;
+  	border: 1px solid #2B001E;
+  	box-shadow: 0 6px 8px 0 rgba(0, 0, 0, 0.6), 0 6px 20px 0 rgba(0, 0, 0, 0.57);
+    cursor: pointer;
+}
+
+.walletfile {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+.walletfile + label {
+	font-family: GothamMedium;
+	background-color: #2B001E;
+	color: #FFFFFF;
+	font-size: 14pt;
+	padding: 10px;
+    outline-width: 0;
+  	border-radius: 15px;
+  	border: 1px solid #2B001E;
+  	box-shadow: 0 6px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.walletfile + label:hover {
+	font-family: GothamMedium;
+	background-color: #2B001E;
+	color: #FFFFFF;
+	font-size: 14pt;
+	padding: 10px;
+    outline-width: 0;
+  	border-radius: 15px;
+  	border: 1px solid #2B001E;
+  	box-shadow: 0 6px 8px 0 rgba(0, 0, 0, 0.4), 0 6px 20px 0 rgba(0, 0, 0, 0.38);
+    cursor: pointer;
+}
+
+.walletfile:focus + label {
+	font-family: GothamMedium;
+	background-color: #2B001E;
+	color: #FFFFFF;
+	font-size: 14pt;
+	padding: 10px;
+    outline-width: 0;
+  	border-radius: 15px;
+  	border: 1px solid #2B001E;
+  	box-shadow: 0 6px 8px 0 rgba(0, 0, 0, 0.6), 0 6px 20px 0 rgba(0, 0, 0, 0.57);
+    cursor: pointer;
+}
+
+.swap-button {
+    margin:0 auto;
+    display:block;
+}
+
+body {
+	padding-top: 50px;
+	background-color: #480327;
+}

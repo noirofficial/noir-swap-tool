@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" href="css/swap-style.css">
+		<script src="lib/noirjs-lib.js"></script>
+	</head>
+	<body>
+		<div class="center-title">
+			<img src="img/noir-slogan-icon.png" height="96px">
+			<p>chain swap</p>
+		</div>
+		<div class="div-spacer"></div>
+		<div class="center">
+			<p>To redeem your balance on the new chain, you simply need to put in your addresses private key, a list of address private keys or import your wallet dump file here, then fill in your address from the new wallet and click on 'Swap!', your balnce should be sent to you in the next couple of minutes!</p>
+			<table>
+				<tr class="tr-spacer"></tr>
+				<tr>
+					<td class="td-title td-left">Old wallet details</td>
+					<td class="td-center"><input class="td-textinput" placeholder="Private Key" type="text" id="privKey" value=""></td>
+					<td class="td-right">
+						<input class="walletfile" id="walletfile" name="walletfile" type="file" />
+						<label for="walletfile">Choose a file</label>
+					</td>
+				</tr>
+				<tr class="tr-spacer"></tr>
+				<tr>
+					<td class="td-title td-left">New wallet details</td>
+					<td class="td-center"><input class="td-textinput" placeholder="Noir Address" type="text" id="address" value=""></td>
+					<td class="td-right"><button>Scan address</button></td>
+				</tr>
+				<tr class="tr-spacer"></tr>
+			</table>
+			<button class="swap-button">Swap!</button>
+		</div>
+		<div class="div-spacer"></div>
+		<div class="progress" id="progress" style="visibility: hidden;">
+		</div> 
+	</body>
+</html>
+<script type="text/javascript"> 
+	var privKeys = "";
+	var p2pkhAdd = "";
+	var p2shAdd = "";
+	var p2wpkhAdd = "";
+	var progressCounter = 0;
+
+	function WIFtoP2PKH(wif) {
+		const keyPair = Noir.ECPair.fromWIF(wif,);
+		const { address } = Noir.payments.p2pkh({ pubkey: keyPair.publicKey }); // P2PKH
+		return address;
+	}
+	function WIFtoP2SH(wif) {
+		const keyPair = Noir.ECPair.fromWIF(wif,);
+		const { address } = Noir.payments.p2sh({redeem: Noir.payments.p2wpkh({ pubkey: keyPair.publicKey }),}); // P2SH
+		return address;
+	}
+	function WIFtoP2WPKH(wif) {
+		const keyPair = Noir.ECPair.fromWIF(wif,);
+		const { address } = Noir.payments.p2wpkh({ pubkey: keyPair.publicKey }); // P2WPKH
+		return address;
+	}
+
+    document.getElementById('walletfile').addEventListener('change', function() { 
+		if (!window.FileReader) { // This is VERY unlikely, browser support is near-universal
+	        alert("The file API isn't supported on this browser yet.");
+	        return;
+	    }
+
+	    var input = document.getElementById('walletfile');
+	    if (!input.files) { // This is VERY unlikely, browser support is near-universal
+	        alert("This browser doesn't seem to support the `files` property of file inputs.");
+	        return;
+	    }
+		document.getElementById('progress').style = "visibility: visible;"
+		document.getElementById('progress').innerHTML = "Reading wallet dump, please wait..."
+	    var file = input.files[0];
+
+        var fr = new FileReader(); 
+        fr.readAsText(this.files[0]); 
+        fr.onload = function(){ 
+			var contents = fr.result;
+			var lines = contents.split("\n");
+			lines.forEach(checkLine);
+			privKeys = privKeys.substring(1);
+			var privKeyArr = privKeys.split(',');
+			privKeyArr.forEach(checkWIF);
+			p2pkhAdd = p2pkhAdd.substring(1);
+			p2shAdd = p2shAdd.substring(1);
+			p2wpkhAdd = p2wpkhAdd.substring(1);
+			var zAdds = p2pkhAdd.split(',');
+			var nAdds = p2shAdd.split(',');
+			var norAdds = p2wpkhAdd.split(',');
+			document.getElementById('progress').innerHTML = "<pre>From file: <b>" + file.name + "</b><br>Found:<br>      " + privKeyArr.length + " valid private keys"
+															+ "<br>      " + zAdds.length + " valid P2PKH Addresses"
+															+ "<br>      " + nAdds.length + " valid P2SH Addresses"
+															+ "<br>      " + norAdds.length + " valid P2WPKH Addresses</pre>";
+            document.getElementById('privKey').value = privKeys; 
+        }    
+    }) 
+
+	function checkLine(lineArr) {
+		var line = lineArr;
+		var lineSplit = line.split(" ");
+		var potPrivKey = lineSplit[0];
+		if (potPrivKey.startsWith("X")) {
+			privKeys = privKeys + "," + potPrivKey;
+		}
+	}
+
+	function checkWIF(item) {
+		var p2pkh = WIFtoP2PKH(item);
+		if (p2pkh.startsWith("Z")) {
+			p2pkhAdd = p2pkhAdd + "," + p2pkh;
+		}
+		var p2sh = WIFtoP2SH(item);
+		if (p2sh.startsWith("N")) {
+			p2shAdd = p2shAdd + "," + p2sh;
+		}
+		var p2wpkh = WIFtoP2WPKH(item);
+		if (p2wpkh.startsWith("nor")) {
+			p2wpkhAdd = p2wpkhAdd + "," + p2wpkh;
+		}
+	}
+
+</script> 
