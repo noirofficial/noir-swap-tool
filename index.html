@@ -35,11 +35,19 @@
 		</div>
 		<div class="div-spacer"></div>
 		<div class="progress" id="progress" style="visibility: hidden;">
-		</div> 
-    	<video id="video" width="300" height="200" style="border: 1px solid gray"></video>
+		</div>
+		<div id="myModal" class="modal">
+			<div class="modal-content">
+		    	<span class="close">&times;</span>
+    			<video id="video" width="300" height="200" style="border: 1px solid gray"></video>
+			</div>
+
+		</div>
 	</body>
 </html>
 <script type="text/javascript"> 
+	var modal = document.getElementById("myModal");
+	var span = document.getElementsByClassName("close")[0];
 	var privKeys = "";
 	var p2pkhAdd = "";
 	var p2shAdd = "";
@@ -63,8 +71,10 @@
 	}
 
     document.getElementById('walletfile').addEventListener('change', function() { 
+    	wait(5); // Otherwise it may skip displaying the process
 		document.getElementById('progress').style = "visibility: visible;"
 		document.getElementById('progress').innerHTML = "Reading wallet dump, please wait..."
+		
 		if (!window.FileReader) { // This is VERY unlikely, browser support is near-universal
 	        alert("The file API isn't supported on this browser yet.");
 			document.getElementById('progress').innerHTML = "The file API isn't supported on this browser yet."
@@ -101,6 +111,13 @@
             document.getElementById('privKey').value = privKeys; 
         }    
     }) 
+	
+	function wait(ms) {
+	    var d = new Date();
+	    var d2 = null;
+	    do { d2 = new Date(); }
+	    while(d2-d < ms);
+	}
 
 	function checkLine(lineArr) {
 		var line = lineArr;
@@ -127,12 +144,22 @@
 	}
 
 	function scanAddress() {
+		modal.style.display = "block";
+
 	    const codeReader = new ZXing.BrowserQRCodeReader();
 
 		codeReader
 		  .listVideoInputDevices()
 		  .then(videoInputDevices => {videoInputDevices.forEach(device => console.log(`${device.label}, ${device.deviceId}`));}) 
-		  .catch(err => console.error(err));
+		  .catch(err => {
+		  	var errStr = String(err);
+		  	if (errStr.includes("NotFoundError: Requested device not found")) {
+		  		alert("No camera found!");
+  				modal.style.display = "none";
+		  	} else {
+		  		console.error(err);
+		  	}
+		  });
 
 		codeReader
 		  .decodeOnceFromVideoDevice(undefined, 'video')
@@ -143,7 +170,15 @@
 		  	codeReader.reset();
 		  	return;
 		  })
-		  .catch(err => console.error(err));
+		  .catch(err => {
+		  	var errStr = String(err);
+		  	if (errStr.includes("NotFoundError: Requested device not found")) {
+		  		alert("No camera found!");
+  				modal.style.display = "none";
+		  	} else {
+		  		console.error(err);
+		  	}
+		  });
 	}
 
 	function validateScannedAddress(addr) {
@@ -161,6 +196,16 @@
 	  		console.error(e);
 	    	return false;
 	  	}
+	}
+
+	window.onclick = function(event) {
+	  	if (event.target == modal) {
+	    	modal.style.display = "none";
+	  	}
+	}
+
+	span.onclick = function() {
+		modal.style.display = "none";
 	}
 
 </script> 
