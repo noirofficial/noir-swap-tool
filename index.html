@@ -61,18 +61,20 @@
 	}
 
     document.getElementById('walletfile').addEventListener('change', function() { 
+		document.getElementById('progress').style = "visibility: visible;"
+		document.getElementById('progress').innerHTML = "Reading wallet dump, please wait..."
 		if (!window.FileReader) { // This is VERY unlikely, browser support is near-universal
 	        alert("The file API isn't supported on this browser yet.");
+			document.getElementById('progress').innerHTML = "The file API isn't supported on this browser yet."
 	        return;
 	    }
 
 	    var input = document.getElementById('walletfile');
 	    if (!input.files) { // This is VERY unlikely, browser support is near-universal
 	        alert("This browser doesn't seem to support the `files` property of file inputs.");
-	        return;
+   			document.getElementById('progress').innerHTML = "This browser doesn't seem to support the `files` property of file inputs."
+			return;
 	    }
-		document.getElementById('progress').style = "visibility: visible;"
-		document.getElementById('progress').innerHTML = "Reading wallet dump, please wait..."
 	    var file = input.files[0];
 
         var fr = new FileReader(); 
