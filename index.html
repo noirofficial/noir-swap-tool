@@ -54,20 +54,22 @@
 	var p2shAdd = "";
 	var p2wpkhAdd = "";
 	var progressCounter = 0;
+	const NW = Noir.networks.testnet;
 
 	function WIFtoP2PKH(wif) {
-		const keyPair = Noir.ECPair.fromWIF(wif,);
-		const { address } = Noir.payments.p2pkh({ pubkey: keyPair.publicKey }); // P2PKH
+		const keyPair = Noir.ECPair.fromWIF(wif, NW);
+		const { address } = Noir.payments.p2pkh({ pubkey: keyPair.publicKey,network: NW }); // P2PKH
+		console.log("p2pkh: " + address);
 		return address;
 	}
 	function WIFtoP2SH(wif) {
-		const keyPair = Noir.ECPair.fromWIF(wif,);
-		const { address } = Noir.payments.p2sh({redeem: Noir.payments.p2wpkh({ pubkey: keyPair.publicKey }),}); // P2SH
+		const keyPair = Noir.ECPair.fromWIF(wif, NW);
+		const { address } = Noir.payments.p2sh({redeem: Noir.payments.p2wpkh({ pubkey: keyPair.publicKey,network: NW }),network: NW}); // P2SH
 		return address;
 	}
 	function WIFtoP2WPKH(wif) {
-		const keyPair = Noir.ECPair.fromWIF(wif,);
-		const { address } = Noir.payments.p2wpkh({ pubkey: keyPair.publicKey }); // P2WPKH
+		const keyPair = Noir.ECPair.fromWIF(wif, NW);
+		const { address } = Noir.payments.p2wpkh({ pubkey: keyPair.publicKey,network: NW }); // P2WPKH
 		return address;
 	}
 
@@ -124,7 +126,7 @@
 		var line = lineArr;
 		var lineSplit = line.split(" ");
 		var potPrivKey = lineSplit[0];
-		if (potPrivKey.startsWith("X")) {
+		if (potPrivKey.startsWith("V")) { // X for mainnet
 			privKeys = privKeys + "," + potPrivKey;
 		}
 	}
@@ -136,15 +138,15 @@
 			privKeys = privKeys + "," + item;
 		}
 		var p2pkh = WIFtoP2PKH(item);
-		if (p2pkh.startsWith("Z")) {
+		if (p2pkh.startsWith("T")) { // Z for mainnet
 			p2pkhAdd = p2pkhAdd + "," + p2pkh;
 		}
 		var p2sh = WIFtoP2SH(item);
-		if (p2sh.startsWith("N")) {
+		if (p2sh.startsWith("N") || p2sh.startsWith("M")) { // only N for mainnet
 			p2shAdd = p2shAdd + "," + p2sh;
 		}
 		var p2wpkh = WIFtoP2WPKH(item);
-		if (p2wpkh.startsWith("nor")) {
+		if (p2wpkh.startsWith("tnor")) { // nor for mainnet
 			p2wpkhAdd = p2wpkhAdd + "," + p2wpkh;
 		}
 	}
@@ -266,8 +268,9 @@
 		    	document.getElementById("progress").innerHTML = this.responseText;
 		    } 
 		};
-		xhttp.open("POST", "http://192.168.0.129/validate.php", true);
+		xhttp.open("POST", "https://swap.noirofficial.org/validate.php", true);
 		xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		console.log(data)
 		var encdata=window.btoa(data);
 		xhttp.send("data=" + encdata);
 		/*document.getElementById('body').innerHTML = form;
