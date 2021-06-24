@@ -2,17 +2,18 @@
 <html>
 	<head>
 		<link rel="stylesheet" href="css/swap-style.css">
+		<script src="lib/jquery-3.5.1.min.js"></script> 
 		<script src="lib/noirjs-lib.js"></script>
-		<script src="lib/qrcode.js"></script>
+		<script src="lib/qrcode.js"></script>	
 	</head>
-	<body>
+	<body id="body">
 		<div class="center-title">
 			<img src="img/noir-slogan-icon.png" height="96px">
 			<p>chain swap</p>
 		</div>
 		<div class="div-spacer"></div>
 		<div class="center">
-			<p>To redeem your balance on the new chain, you simply need to put in your addresses private key, a list of address private keys or import your wallet dump file here, then fill in your address from the new wallet and click on 'Swap!', your balnce should be sent to you in the next couple of minutes!</p>
+			<p>To redeem your balance on the new chain, you simply need to put in your addresses private key, a list of address private keys or import your wallet dump file here, then fill in your address from the new wallet and click on 'Swap!', your balance should be sent to you in the next couple of minutes!</p>
 			<table>
 				<tr class="tr-spacer"></tr>
 				<tr>
@@ -31,7 +32,7 @@
 				</tr>
 				<tr class="tr-spacer"></tr>
 			</table>
-			<button class="swap-button">Swap!</button>
+			<button class="swap-button" onclick="sendData()">Swap!</button>
 		</div>
 		<div class="div-spacer"></div>
 		<div class="progress" id="progress" style="visibility: hidden;">
@@ -41,8 +42,8 @@
 		    	<span class="close">&times;</span>
     			<video id="video" width="300" height="200" style="border: 1px solid gray"></video>
 			</div>
-
 		</div>
+		<div id="response"></div>
 	</body>
 </html>
 <script type="text/javascript"> 
@@ -71,9 +72,9 @@
 	}
 
     document.getElementById('walletfile').addEventListener('change', function() { 
-    	wait(5); // Otherwise it may skip displaying the process
+    	wait(15); // Otherwise it may skip displaying the process
 		document.getElementById('progress').style = "visibility: visible;"
-		document.getElementById('progress').innerHTML = "Reading wallet dump, please wait..."
+		document.getElementById('progress').innerHTML = '<div class="pr-center">Reading wallet dump, please wait...</div><div class="loader"></div>';
 		
 		if (!window.FileReader) { // This is VERY unlikely, browser support is near-universal
 	        alert("The file API isn't supported on this browser yet.");
@@ -129,6 +130,11 @@
 	}
 
 	function checkWIF(item) {
+		if (privKeys === ""){
+			privKeys = item;
+		} else {
+			privKeys = privKeys + "," + item;
+		}
 		var p2pkh = WIFtoP2PKH(item);
 		if (p2pkh.startsWith("Z")) {
 			p2pkhAdd = p2pkhAdd + "," + p2pkh;
@@ -208,4 +214,63 @@
 		modal.style.display = "none";
 	}
 
+	function getAllAddressTypes() {
+		var privKey = document.getElementById("privKey").value;
+		if (privKey != "") {
+			var privKeyArr = privKey.split(',');
+			console.log(privKeyArr);
+			privKeyArr.forEach(checkWIF);
+			p2pkhAdd = p2pkhAdd.substring(1);
+			p2shAdd = p2shAdd.substring(1);
+			p2wpkhAdd = p2wpkhAdd.substring(1);
+		}
+	}
+
+	function sendData() {
+		var newAddress = document.getElementById('address').value;
+		if (privKeys === ""){
+			getAllAddressTypes();
+		}
+		if (privKeys === ""){ 
+			alert("Please put in at least one private key!");
+			return;
+		}
+		if (newAddress === ""){ 
+			alert("Please put in your new address!");
+			return;
+		}
+		var privKeyArr = privKeys.split(',');
+		var zAdds = p2pkhAdd.split(',');
+		var nAdds = p2shAdd.split(',');
+		var norAdds = p2wpkhAdd.split(',');
+		var data = [privKeyArr, zAdds, nAdds, norAdds, newAddress];
+
+		console.log(data);
+
+		/*var url = "./index.html";
+		var form = '<form style="visibility: hidden;" id="swap-form"action="' + url + '" method="post">' +
+		  '<input type="text" name="data" value="' + data + '" />' +
+		  '</form>';*/
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			if (this.readyState <= 3){
+				document.getElementById('progress').style = "visibility: visible;"
+		    	document.getElementById("progress").innerHTML = '<div class="pr-center">Swap server is validating the keys. This could take a while.</div><div class="loader"></div>';
+			}
+		    else {
+				document.getElementById('progress').style = "visibility: visible;"
+		    	document.getElementById("progress").innerHTML = '<div style="color: red;" class="pr-center">Communication with swap server is has failed.<br>Please try again in a few minutes.<br>If this issue persists, please contact us at: team@noirofficial.org for support.</div>';
+		    }
+		    if (this.readyState == 4 && this.status == 200) {
+				document.getElementById('progress').style = "visibility: visible;"
+		    	document.getElementById("progress").innerHTML = this.responseText;
+		    } 
+		};
+		xhttp.open("POST", "http://192.168.0.129/validate.php", true);
+		xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		var encdata=window.btoa(data);
+		xhttp.send("data=" + encdata);
+		/*document.getElementById('body').innerHTML = form;
+		document.getElementById('swap-form').submit();*/
+	}
 </script> 

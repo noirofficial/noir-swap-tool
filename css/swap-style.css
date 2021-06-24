@@ -274,6 +274,34 @@ button:focus {
   cursor: pointer;
 }
 
+.loader {
+  margin: auto;
+  border: 16px solid #F0EFEF;
+  border-radius: 50%;
+  border-top: 16px solid #2B001E;
+  width: 60px;
+  height: 60px;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.pr-center {
+  margin: auto;
+  text-align: center;
+  margin-bottom: 12.5px;
+}
+
 body {
 	padding-top: 50px;
 	background-color: #480327;
