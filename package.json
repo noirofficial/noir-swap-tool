@@ -18,7 +18,14 @@
     "directories": {
       "buildResources": "build"
     },
-    "files": ["*","css/*","lib/*","font/*","img/*","build/icon.*"]
+    "files": [
+      "*",
+      "css/*",
+      "lib/*",
+      "font/*",
+      "img/*",
+      "build/icon*"
+    ]
   },
   "keywords": [],
   "author": "",
