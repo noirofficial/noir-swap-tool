@@ -24,7 +24,8 @@
       "lib/*",
       "font/*",
       "img/*",
-      "build/icon*"
+      "build/icon*",
+      "build/icons/*"
     ]
   },
   "keywords": [],
