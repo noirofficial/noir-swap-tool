@@ -4,12 +4,27 @@
   "description": "Noir swap application",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "build-win": "electron-builder -w",
+    "build-linux": "electron-builder -l",
+    "build-mac": "electron-builder -m",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "build": {
+    "appId": "org.noirofficial.noirswap",
+    "productName": "Noir Swap",
+    "copyright": "Copyright © 2021 The Noir Team",
+    "directories": {
+      "buildResources": "build"
+    },
+    "files": ["*","css/*","lib/*","font/*","img/*","build/icon.*"]
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "electron": "^11.0.3"
+    "electron": "^11.0.3",
+    "electron-builder": "^22.11.7"
   }
 }
